@@ -15,3 +15,8 @@ ALLOWED_EXT:
   - .png
   - .bmp
   - .tiff
+FEATURES_DIR: "../data/features"
+CLUSTERS_DIR: "../results"
+N_CLUSTERS: 3
+CLUSTER_LINKAGE: "ward"
+CLUSTER_AFFINITY: "euclidean"
