@@ -1,4 +1,4 @@
-[English](#english-version) | [Polska wersja](#wersja-polska)
+[English](#english-version) | [Polska wersja](#polska-wersja)
 
 ---
 
