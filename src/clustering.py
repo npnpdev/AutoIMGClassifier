@@ -41,26 +41,35 @@ def main():
     cfg = load_config()
 
     # Paths from config
-    features_dir = Path(cfg['FEATURES_DIR'])
-    clusters_dir = Path(cfg['CLUSTERS_DIR'])
-    features_file = features_dir / cfg.get('TRAIN_FEATURES_FILE', 'train_features.npz')
-    output_file = clusters_dir / cfg.get('TRAIN_CLUSTERS_FILE', 'train_clusters.npz')
+    features_dir    = Path(cfg['FEATURES_DIR'])
+    clusters_dir    = Path(cfg['CLUSTERS_DIR'])
+    train_feats     = features_dir / cfg.get('TRAIN_FEATURES_FILE', 'train_features.npz')
+    train_out       = clusters_dir / cfg.get('TRAIN_CLUSTERS_FILE', 'train_clusters.npz')
+    test_feats      = features_dir / cfg.get('TEST_FEATURES_FILE', 'test_features.npz')
+    test_out        = clusters_dir / cfg.get('TEST_CLUSTERS_FILE', 'test_clusters.npz')
 
     # Clustering parameters
     n_clusters = cfg.get('N_CLUSTERS', 3)
-    linkage = cfg.get('CLUSTER_LINKAGE', 'ward')
-    affinity = cfg.get('CLUSTER_AFFINITY', 'euclidean')
+    linkage    = cfg.get('CLUSTER_LINKAGE', 'ward')
+    affinity   = cfg.get('CLUSTER_AFFINITY', 'euclidean')
 
-    # Load features
-    features, labels = load_features(features_file)
+    # --- Train set clustering ---
+    # Load train features and true labels
+    train_features, train_labels = load_features(train_feats)
+    # Run clustering on train set
+    train_clusters = run_clustering(train_features, n_clusters, linkage, affinity)
+    # Save train cluster labels alongside true labels
+    save_cluster_labels(train_out, train_clusters, train_labels)
+    print(f"Saved train cluster labels to {train_out}")
 
-    # Run clustering
-    clusters = run_clustering(features, n_clusters, linkage, affinity)
-
-    # Save results
-    save_cluster_labels(output_file, clusters, labels)
-
-    print(f"Saved cluster labels to {output_file}")
+    # --- Test set clustering ---
+    # Load test features (no true labels needed for visualization)
+    test_features, _ = load_features(test_feats)
+    # Run clustering on test set
+    test_clusters = run_clustering(test_features, n_clusters, linkage, affinity)
+    # Save test cluster labels
+    save_cluster_labels(test_out, test_clusters)
+    print(f"Saved test cluster labels to {test_out}")
 
 if __name__ == '__main__':
     main()

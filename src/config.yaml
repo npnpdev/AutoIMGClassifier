@@ -15,8 +15,19 @@ ALLOWED_EXT:
   - .png
   - .bmp
   - .tiff
+
 FEATURES_DIR: "../data/features"
 CLUSTERS_DIR: "../results"
+CLASSIFICATION_DIR: "../results/classification_results" 
+
 N_CLUSTERS: 3
 CLUSTER_LINKAGE: "ward"
 CLUSTER_AFFINITY: "euclidean"
+
+# file names for features and clusters
+TRAIN_FEATURES_FILE: "train_features.npz"
+VAL_FEATURES_FILE: "val_features.npz"
+TEST_FEATURES_FILE: "test_features.npz"
+TEST_CLUSTERS_FILE: "test_clusters.npz"
+TRAIN_CLUSTERS_FILE: "train_clusters.npz"
+TRAIN_PREDICTIONS_FILE: "test_preds.npz"
