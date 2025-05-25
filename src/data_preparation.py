@@ -4,7 +4,6 @@ from pathlib import Path
 from PIL import Image
 import yaml
 import os
-from pathlib import Path
 
 # force CWD to the script's directory
 os.chdir(Path(__file__).resolve().parent)
