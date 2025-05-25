@@ -240,7 +240,7 @@ Igor Tomkowicz
 
 GitHub: [npnpdev](https://github.com/npnpdev)
 
-LinkedIn: [https://www.linkedin.com/in/igor-tomkowicz-a5760b358/](https://www.linkedin.com/in/igor-tomkowicz-a5760b358/
+LinkedIn: [LinkedIn]https://www.linkedin.com/in/igor-tomkowicz-a5760b358/)
 
 ---
 
