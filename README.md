@@ -235,8 +235,11 @@
 ## Autor / Author
 
 Igor Tomkowicz
+
 📧 [npnpdev@gmail.com](mailto:npnpdev@gmail.com)
+
 GitHub: [npnpdev](https://github.com/npnpdev)
+
 LinkedIn: [https://www.linkedin.com/in/igor-tomkowicz-a5760b358/](https://www.linkedin.com/in/igor-tomkowicz-a5760b358/
 
 ---
