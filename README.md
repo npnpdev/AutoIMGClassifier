@@ -94,7 +94,7 @@
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/<your-username>/auto-image-classifier.git
+   git clone https://github.com/npnpdev/auto-image-classifier.git
    cd auto-image-classifier
    ```
 
@@ -208,7 +208,7 @@
 1. **Sklonuj repozytorium**:
 
    ```bash
-   git clone https://github.com/<twoj-uzytkownik>/auto-image-classifier.git
+   git clone https://github.com/npnpdev/auto-image-classifier.git
    cd auto-image-classifier
    ```
 
