@@ -18,7 +18,7 @@ def load_features(features_path):
     data = np.load(features_path)
     return data['features'], data['labels']
 
-# Perform Agglomerative Clustering on features
+# Agglomerative Clustering on features
 def run_clustering(features, n_clusters, linkage, affinity):
     # Create and fit the agglomerative clustering model
     model = AgglomerativeClustering(
@@ -28,14 +28,13 @@ def run_clustering(features, n_clusters, linkage, affinity):
     )
     return model.fit_predict(features)
 
-# Save cluster labels (and optional true labels) to .npz file
+# Save cluster labels to .npz file
 def save_cluster_labels(output_path, cluster_labels, true_labels=None):
     output_path.parent.mkdir(parents=True, exist_ok=True)
     if true_labels is not None:
         np.savez(output_path, clusters=cluster_labels, labels=true_labels)
     else:
         np.savez(output_path, clusters=cluster_labels)
-
 
 def main():
     # Load config
@@ -49,6 +48,7 @@ def main():
     if clusters_dir.exists():
         shutil.rmtree(clusters_dir)
 
+    # Variables for file paths
     train_feats     = features_dir / cfg.get('TRAIN_FEATURES_FILE', 'train_features.npz')
     train_out       = clusters_dir / cfg.get('TRAIN_CLUSTERS_FILE', 'train_clusters.npz')
     test_feats      = features_dir / cfg.get('TEST_FEATURES_FILE', 'test_features.npz')
@@ -60,19 +60,25 @@ def main():
     affinity   = cfg.get('CLUSTER_AFFINITY', 'euclidean')
 
     # --- Train set clustering ---
+
     # Load train features and true labels
     train_features, train_labels = load_features(train_feats)
+    
     # Run clustering on train set
     train_clusters = run_clustering(train_features, n_clusters, linkage, affinity)
+    
     # Save train cluster labels alongside true labels
     save_cluster_labels(train_out, train_clusters, train_labels)
     print(f"Saved train cluster labels to {train_out}")
 
     # --- Test set clustering ---
+
     # Load test features (no true labels needed for visualization)
     test_features, _ = load_features(test_feats)
+    
     # Run clustering on test set
     test_clusters = run_clustering(test_features, n_clusters, linkage, affinity)
+    
     # Save test cluster labels
     save_cluster_labels(test_out, test_clusters)
     print(f"Saved test cluster labels to {test_out}")

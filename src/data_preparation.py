@@ -69,7 +69,10 @@ def save_image(src_path: Path, cls: str, split: str):
         print(f"Failed to process {src_path}: {e}")
 
 
-if __name__ == '__main__':
+def main():
     prepare_directories()
     process_and_split()
     print("Data preparation complete.")
+
+if __name__ == '__main__':
+    main()

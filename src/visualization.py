@@ -7,7 +7,7 @@ from PIL import Image
 from sklearn.metrics import classification_report, confusion_matrix
 
 # --------------------------------------------------
-# 1. Ustawienia i CWD
+# Settings and CWD
 # --------------------------------------------------
 # force CWD to the script's directory
 os.chdir(Path(__file__).resolve().parent)
@@ -22,34 +22,34 @@ CLASS_DIR    = Path(cfg["CLASSIFICATION_DIR"])
 RAW_TEST_DIR = Path(cfg["SPLITS_DIR"]) / "test"
 ALLOWED_EXT  = set(cfg["ALLOWED_EXT"])
 
-# pliki z konfiguracji
+# Variables for file paths
 features_path = FEATURES_DIR / cfg["TEST_FEATURES_FILE"]
 clusters_path = CLUSTERS_DIR / cfg["TEST_CLUSTERS_FILE"]
 preds_path    = CLASS_DIR  / cfg["TEST_PREDICTIONS_FILE"]
 
-# folder docelowy wizualizacji
+# Destination directory for visualizations
 viz_dir = CLUSTERS_DIR / "visualizations"
 viz_dir.mkdir(parents=True, exist_ok=True)
 
 # --------------------------------------------------
-# 2. Wczytanie danych
+# Loading data
 # --------------------------------------------------
 data_feat   = np.load(features_path)
 y_true_text = data_feat["labels"]
 
-# Korzystamy bezpośrednio z listy ścieżek zapisanej przy ekstrakcji cech
+# Load image paths
 img_paths = data_feat["paths"]
 
 y_pred   = np.load(preds_path)["preds"]
 clusters = np.load(clusters_path)["clusters"]
 
-# mapowanie tekst → idx
+# Mapping class names to indices
 classes      = sorted(set(y_true_text))
 label_to_idx = {c:i for i,c in enumerate(classes)}
 y_true       = np.array([label_to_idx[t] for t in y_true_text])
 
 # --------------------------------------------------
-# 3. Raport klasyfikacji
+# Visualization of results
 # --------------------------------------------------
 print("\n=== Classification Report (Test Set) ===\n")
 print(classification_report(
@@ -58,11 +58,16 @@ print(classification_report(
 ))
 
 # --------------------------------------------------
-# 4. Macierz pomyłek (zapisywana do pliku)
+# Confusion Matrix (saved to file)
 # --------------------------------------------------
+# Create confusion matrix - how many true labels vs predicted
 cm = confusion_matrix(y_true, y_pred)
+
+# A figure for the confusion matrix
 fig, ax = plt.subplots(figsize=(6, 5))
 im = ax.imshow(cm, interpolation='nearest', aspect='auto')
+
+# Figure settings
 ax.set_title("Confusion Matrix")
 ax.set_xticks(np.arange(len(classes)))
 ax.set_yticks(np.arange(len(classes)))
@@ -79,12 +84,16 @@ print(f"Saved confusion matrix to {cm_file}")
 plt.close(fig)
 
 # --------------------------------------------------
-# 5. Siatka przykładowych obrazów (zapisywana do pliku)
+# Sample images with clusters and predictions
 # --------------------------------------------------
+# Choosing a random sample of images, max 9
 num_samples = min(9, len(img_paths))
 inds = np.random.choice(len(img_paths), num_samples, replace=False)
 
+# A grid of sample images
 fig, axes = plt.subplots(3, 3, figsize=(12, 12))
+
+# Display images in the grid
 for ax, idx in zip(axes.flatten(), inds):
     img = Image.open(img_paths[idx]).convert("RGB")
     ax.imshow(img)

@@ -15,14 +15,16 @@ def load_config(path='config.yaml'):
 
 
 def prepare_model():
-    # Load pretrained MobileNetV2 and remove classifier
+    # Loading pretrained MobileNetV2 and remove classifier
     model = models.mobilenet_v2(pretrained=True)
     # Keep feature extractor: all layers except classifier
     feature_extractor = torch.nn.Sequential(
         model.features,
         torch.nn.AdaptiveAvgPool2d((1, 1))
     )
+    # Set to eval mode
     feature_extractor.eval()
+
     return feature_extractor
 
 
@@ -32,14 +34,20 @@ def extract_features(image_path, transform, model, device):
     with torch.no_grad():
         feat = model(x)
     # feat shape: [1, 1280, 1, 1]
+    # Flatten the feature map to a 1D vector [1, 1280]
     feat = feat.view(feat.size(0), -1).cpu().numpy()
+    
+    # Squeeze to remove the batch dimension
     return feat.squeeze()
-
 
 def main():
     cfg = load_config()
+
+    # Convert paths and settings
     splits_dir = Path(cfg['SPLITS_DIR'])
     output_dir = Path(cfg.get('FEATURES_DIR', 'features'))
+    
+    # Create output directory if it doesn't exist
     output_dir.mkdir(exist_ok=True)
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -48,6 +56,7 @@ def main():
     # Transform: normalize to [0,1]
     transform = transforms.Compose([
         transforms.ToTensor(),
+        # transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
 
     for split in ['train', 'val', 'test']:
@@ -66,7 +75,7 @@ def main():
                     feat = extract_features(img_path, transform, model, device)
                     features.append(feat)
                     labels.append(label)
-                    paths.append(str(img_path))   # collecting paths for later use
+                    paths.append(str(img_path))   # collecting paths
                 except Exception as e:
                     print(f"Error processing {img_path}: {e}")
         features = np.stack(features)

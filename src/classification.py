@@ -8,10 +8,7 @@ from sklearn.preprocessing import StandardScaler
 import joblib
 
 # force CWD to the script's directory
-try:
-    os.chdir(Path(__file__).resolve().parent)
-except NameError:
-    pass  
+os.chdir(Path(__file__).resolve().parent) 
 
 # Load configuration from config.yaml
 def load_config(config_path='config.yaml'):
@@ -25,8 +22,11 @@ def load_features(features_path):
 
 # Encode textual labels to numeric indices
 def encode_labels(labels):
+    # Ensure labels are unique and sorted
     classes = sorted(set(labels))
+    # Create a mapping from class names to indices
     class_to_idx = {c: i for i, c in enumerate(classes)}
+    # Convert labels to indices
     idx_labels = np.array([class_to_idx[l] for l in labels])
     return idx_labels, class_to_idx
 
@@ -37,11 +37,13 @@ def train_knn(train_X, train_y, n_neighbors, metric):
         metric=metric,
         weights='distance'    # closer neighbors have greater influence
     )
-    model.fit(train_X, train_y)
+    # Fit the model to the training data
+    model.fit(train_X, train_y)    
     return model
 
 # Save model, scaler, and class mapping
 def save_model_bundle(model, scaler, class_to_idx, output_path):
+    # A bundle to save the model, scaler, and class mapping
     bundle = {
         'model': model,
         'scaler': scaler,
@@ -65,6 +67,7 @@ def main():
     if out_dir.exists():
         shutil.rmtree(out_dir)
 
+    # Variables for file paths
     train_file = features_dir / cfg.get('TRAIN_FEATURES_FILE', 'train_features.npz')
     val_file   = features_dir / cfg.get('VAL_FEATURES_FILE', 'val_features.npz')
     test_file  = features_dir / cfg.get('TEST_FEATURES_FILE', 'test_features.npz')
