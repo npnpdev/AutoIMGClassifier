@@ -1,12 +1,12 @@
+import warnings
+# Suppress warnings for cleaner output
+warnings.filterwarnings("ignore")
+
 import data_preparation
 import feature_extraction
 import clustering
 import classification
 import visualization
-
-import warnings
-# Suppress warnings for cleaner output
-warnings.filterwarnings("ignore")
 
 def main():
     # Prepare the data 
