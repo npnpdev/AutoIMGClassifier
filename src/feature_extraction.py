@@ -53,6 +53,7 @@ def main():
     for split in ['train', 'val', 'test']:
         features = []
         labels = []
+        paths = []
         split_dir = splits_dir / split
         for cls_dir in split_dir.iterdir():
             if not cls_dir.is_dir():
@@ -65,12 +66,21 @@ def main():
                     feat = extract_features(img_path, transform, model, device)
                     features.append(feat)
                     labels.append(label)
+                    paths.append(str(img_path))   # collecting paths for later use
                 except Exception as e:
                     print(f"Error processing {img_path}: {e}")
         features = np.stack(features)
         labels = np.array(labels)
-        np.savez(output_dir / f"{split}_features.npz", features=features, labels=labels)
+        paths = np.array(paths)
+        np.savez(output_dir / f"{split}_features.npz",
+            features=features,
+            labels=labels,
+            paths=paths)     
         print(f"Saved features for {split}: {features.shape}")
+
+        # Clear memory
+        if device.type == 'cuda':
+            torch.cuda.empty_cache()
 
 if __name__ == '__main__':
     main()

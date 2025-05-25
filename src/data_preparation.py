@@ -20,7 +20,6 @@ SPLIT_RATIOS = cfg['SPLIT_RATIOS']
 RANDOM_SEED = cfg['RANDOM_SEED']
 ALLOWED_EXT = set(cfg['ALLOWED_EXT'])
 
-
 """ Create and clean directories for each dataset split. """
 def prepare_directories():
     if SPLITS_DIR.exists():

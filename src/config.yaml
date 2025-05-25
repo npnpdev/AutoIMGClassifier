@@ -6,8 +6,8 @@ IMAGE_SIZE:
   - 224
 SPLIT_RATIOS:
   train: 0.6
-  val: 0.2
-  test: 0.2
+  val: 0.1
+  test: 0.3
 RANDOM_SEED: 42
 ALLOWED_EXT:
   - .jpg
@@ -30,4 +30,4 @@ VAL_FEATURES_FILE: "val_features.npz"
 TEST_FEATURES_FILE: "test_features.npz"
 TEST_CLUSTERS_FILE: "test_clusters.npz"
 TRAIN_CLUSTERS_FILE: "train_clusters.npz"
-TRAIN_PREDICTIONS_FILE: "test_preds.npz"
+TEST_PREDICTIONS_FILE: "test_preds.npz"

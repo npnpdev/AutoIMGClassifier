@@ -1,4 +1,5 @@
 import os
+import shutil
 import numpy as np
 import yaml
 from pathlib import Path
@@ -43,6 +44,11 @@ def main():
     # Paths from config
     features_dir    = Path(cfg['FEATURES_DIR'])
     clusters_dir    = Path(cfg['CLUSTERS_DIR'])
+
+    # Clear previous clusters if they exist
+    if clusters_dir.exists():
+        shutil.rmtree(clusters_dir)
+
     train_feats     = features_dir / cfg.get('TRAIN_FEATURES_FILE', 'train_features.npz')
     train_out       = clusters_dir / cfg.get('TRAIN_CLUSTERS_FILE', 'train_clusters.npz')
     test_feats      = features_dir / cfg.get('TEST_FEATURES_FILE', 'test_features.npz')
