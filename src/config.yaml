@@ -1,0 +1,17 @@
+# Configuration for image preprocessing and dataset splitting
+RAW_DIR: "../data/raw"
+SPLITS_DIR: "../data/splits"
+IMAGE_SIZE:
+  - 224
+  - 224
+SPLIT_RATIOS:
+  train: 0.6
+  val: 0.2
+  test: 0.2
+RANDOM_SEED: 42
+ALLOWED_EXT:
+  - .jpg
+  - .jpeg
+  - .png
+  - .bmp
+  - .tiff
